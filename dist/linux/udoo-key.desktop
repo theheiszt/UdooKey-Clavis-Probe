@@ -1,0 +1,19 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=UDOO KEY Workbench
+GenericName=Universal Electronics Diagnostic Instrument
+Comment=Dual-MCU Logic Analyzer, Bus Tools, Multimeter, Terminal & Debugger
+Exec=udoo-key-app %u
+Icon=udoo-key
+Terminal=false
+Categories=Development;Electronics;Engineering;Science;
+Keywords=LogicAnalyzer;Electronics;RP2040;ESP32;Oscilloscope;BusPirate;UART;I2C;SPI;SWD;JTAG;
+MimeType=application/x-udoo-key-session;
+StartupNotify=true
+StartupWMClass=udoo-key-app
+Actions=OfflineMock;
+
+[Desktop Action OfflineMock]
+Name=Launch in Simulation Mode
+Exec=udoo-key-app --mock

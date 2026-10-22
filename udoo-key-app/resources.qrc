@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="app-icon.svg">resources/icons/udoo-key.svg</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../rp2040_logic_analyzer"
+		}
+	],
+	"settings": {}
+}

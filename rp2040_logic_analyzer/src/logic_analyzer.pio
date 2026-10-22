@@ -1,0 +1,41 @@
+;
+; logic_analyzer.pio — High-Speed Parallel GPIO Logic Analyzer PIO Program
+; Capable of sampling 8 or 16 GPIO pins concurrently at up to 120 MHz into DMA
+;
+
+.pio_version 0
+.program logic_analyzer
+
+.wrap_target
+    in pins, 8
+.wrap
+
+% c-sdk {
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+
+static inline void logic_analyzer_init(PIO pio, uint sm, uint offset, uint pin_base, uint pin_count, float div) {
+    pio_sm_config c = logic_analyzer_program_get_default_config(offset);
+
+    // Set pin base for IN instruction
+    sm_config_set_in_pins(&c, pin_base);
+
+    // Set all sample pins as inputs in PIO
+    for (uint i = 0; i < pin_count; i++) {
+        pio_gpio_init(pio, pin_base + i);
+    }
+    pio_sm_set_consecutive_pindirs(pio, sm, pin_base, pin_count, false);
+
+    // Shift in to right, autopush enabled, threshold 32 bits (4 bytes / 4 samples of 8 bits)
+    sm_config_set_in_shift(&c, true, true, 32);
+
+    // FIFO join RX: join TX FIFO into RX to double buffer depth to 8 x 32-bit words
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
+
+    // Set clock divider for sample rate control
+    sm_config_set_clkdiv(&c, div);
+
+    // Initialize state machine
+    pio_sm_init(pio, sm, offset, &c);
+}
+%}

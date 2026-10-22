@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#16161D"/>
+      <stop offset="100%" stop-color="#0E0E14"/>
+    </linearGradient>
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00FFCC"/>
+      <stop offset="100%" stop-color="#007A5E"/>
+    </linearGradient>
+    <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#282836"/>
+      <stop offset="100%" stop-color="#1B1B24"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded App Background -->
+  <rect x="8" y="8" width="240" height="240" rx="48" fill="url(#bgGrad)" stroke="#38384A" stroke-width="4"/>
+
+  <!-- Instrument Waveform Grid / Track -->
+  <line x1="32" y1="72" x2="224" y2="72" stroke="#252533" stroke-width="2" stroke-dasharray="4,4"/>
+  <line x1="32" y1="128" x2="224" y2="128" stroke="#252533" stroke-width="2" stroke-dasharray="4,4"/>
+  <line x1="32" y1="184" x2="224" y2="184" stroke="#252533" stroke-width="2" stroke-dasharray="4,4"/>
+
+  <!-- Digital Waveform Traces -->
+  <path d="M 32,84 L 64,84 L 64,56 L 104,56 L 104,84 L 144,84 L 144,56 L 184,56 L 184,84 L 224,84" 
+        fill="none" stroke="#00FFCC" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <path d="M 32,140 L 76,140 L 76,116 L 120,116 L 120,140 L 160,140 L 160,116 L 224,116" 
+        fill="none" stroke="#79C0FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Dual-MCU Core IC Chip Representation -->
+  <rect x="78" y="152" width="100" height="68" rx="8" fill="url(#chipGrad)" stroke="#00FFCC" stroke-width="3"/>
+  <circle cx="92" cy="166" r="4" fill="#00FFCC"/>
+  <text x="128" y="184" font-family="monospace, sans-serif" font-size="13" font-weight="bold" fill="#FFFFFF" text-anchor="middle">UDOO KEY</text>
+  <text x="128" y="202" font-family="monospace, sans-serif" font-size="9" fill="#00FFCC" text-anchor="middle">RP2040+ESP32</text>
+
+  <!-- IC Pins Left & Right -->
+  <line x1="66" y1="168" x2="78" y2="168" stroke="#A0A0B0" stroke-width="3"/>
+  <line x1="66" y1="186" x2="78" y2="186" stroke="#A0A0B0" stroke-width="3"/>
+  <line x1="66" y1="204" x2="78" y2="204" stroke="#A0A0B0" stroke-width="3"/>
+
+  <line x1="178" y1="168" x2="190" y2="168" stroke="#A0A0B0" stroke-width="3"/>
+  <line x1="178" y1="186" x2="190" y2="186" stroke="#A0A0B0" stroke-width="3"/>
+  <line x1="178" y1="204" x2="190" y2="204" stroke="#A0A0B0" stroke-width="3"/>
+</svg>

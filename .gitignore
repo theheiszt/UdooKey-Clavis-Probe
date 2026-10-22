@@ -1,0 +1,49 @@
+# Prerequisites and build directories
+build/
+build-*/
+*/build/
+*/build-*/
+build-linux-*/
+udoo-key-app/build/
+udoo-key-app/build-*/
+rp2040_logic_analyzer/build/
+esp32_coprocessor/build/
+esp32_coprocessor/.pio/
+ESP32-Bit-Pirate-pioarduino/
+
+# Compiled objects and intermediate artifacts
+*.o
+*.obj
+*.a
+*.lib
+*.ninja
+.ninja_*
+CMakeCache.txt
+CMakeFiles/
+*/CMakeFiles/
+*_autogen/
+*/_autogen/
+Testing/
+*/Testing/
+_CPack_Packages/
+*/_CPack_Packages/
+install_manifest.txt
+compile_commands.json
+
+# Upstream reference trees
+BusPirate5-firmware-main/
+BP rp2040 src/
+BP esp32 s3 src/
+
+# Unzipped distribution folder (tracked via .zip archive)
+dist/UDOO-KEY-Workbench-v1.2.0-win64/
+
+# Temporary and local IDE configurations
+.vscode/
+scratch/
+scratch_*
+aqtinstall.log
+*.tmp
+*.log
+.DS_Store
+Thumbs.db

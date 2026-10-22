@@ -1,0 +1,11 @@
+{
+  "subcommand": "validate",
+  "file": "D:\\Udoo Key Project\\enclosure\\model.scad",
+  "success": true,
+  "exit_code": 0,
+  "elapsed_seconds": 0.131,
+  "errors": [],
+  "warnings": [],
+  "echoes": [],
+  "openscad_binary": "C:\\Program Files\\OpenSCAD\\openscad.exe"
+}

@@ -1,0 +1,42 @@
+# UDOO KEY Dual-MCU Universal Electronics Instrument - udev rules
+#
+# Hardware Targets:
+#  - Raspberry Pi RP2040 Primary MCU (Native USB CDC ACM & BOOTSEL ROM)
+#
+# Permissions:
+#  - Group: dialout (for serial communication) / plugdev (for bootloader flashing)
+#  - Mode: 0660 (read/write for owner and group; unprivileged world access blocked)
+#  - Tag: uaccess (systemd logind seat management for local interactive user)
+#
+# ModemManager Isolation:
+#  - ENV{ID_MM_DEVICE_IGNORE}="1" prevents ModemManager from probing the instrument
+#    with AT modem commands upon connection, which would corrupt logic analyzer,
+#    SUMP, and Bus Pirate state machines. This rule is applied ONLY to specific
+#    UDOO KEY RP2040 hardware matching VID 0x2E8A.
+#
+# Installation:
+#   sudo cp 99-udoo-key.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules
+#   sudo udevadm trigger
+#   sudo usermod -a -G dialout,plugdev $USER
+# (Log out and log back in for group membership changes to take effect)
+
+# Raspberry Pi RP2040 - Native USB CDC ACM Serial (UDOO KEY primary instrument engine)
+# Status: VERIFIED (Pico SDK / Arduino-Pico USB CDC default VID:PID)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="000a", MODE="0660", GROUP="dialout", TAG+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# Raspberry Pi RP2040 - BOOTSEL Mass Storage Device (ROM UF2 bootloader)
+# Status: VERIFIED (Raspberry Pi RP2040 Boot ROM hardware default VID:PID)
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="0003", MODE="0660", GROUP="plugdev", TAG+="uaccess"
+
+# Raspberry Pi RP2040 - Custom / Dual-CDC Instrument Protocol VID:PID
+# Status: VERIFIED (Allocated in shared/hardware_config.h for composite firmware)
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2e8a", ATTRS{idProduct}=="105a", MODE="0660", GROUP="dialout", TAG+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# NOTE ON ESP32 AND THIRD-PARTY ADAPTERS:
+# The ESP32-WROVER-E on the UDOO KEY connects to the RP2040 via dedicated on-board PCB
+# traces (RP2040 GP0/GP1 <-> ESP32 IO19/IO22). It does not have an independent on-board
+# USB-UART bridge chip on standard UDOO KEY boards (all host communication routes via
+# RP2040 CN1 USB-C). Third-party USB serial dongles (CP210x, CH340, FTDI) are NOT
+# board-level UDOO KEY hardware and are deliberately excluded from this file to prevent
+# overriding distribution security policies for unrelated devices.

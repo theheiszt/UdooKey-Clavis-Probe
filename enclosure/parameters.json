@@ -1,0 +1,92 @@
+{
+  "project": "UDOO KEY Logic Analyzer Enclosure",
+  "version": "1.0.0",
+  "author": "Antigravity OpenSCAD Engineer",
+  "units": "mm",
+  "parameters": {
+    "pcb": {
+      "length": 130.0,
+      "width_wide": 40.0,
+      "width_pico": 21.0,
+      "pico_length": 51.0,
+      "thickness": 1.6,
+      "component_height": 10.9,
+      "standoff_height": 5.0,
+      "mounting_holes": [
+        {"name": "Pico Left Top",    "x": 2.0,   "y": 14.3, "d": 2.2},
+        {"name": "Pico Left Bottom", "x": 2.0,   "y": 25.7, "d": 2.2},
+        {"name": "Pico Right Top",   "x": 49.0,  "y": 14.3, "d": 2.2},
+        {"name": "Pico Right Bottom","x": 49.0,  "y": 25.7, "d": 2.2},
+        {"name": "Wide Right Top",   "x": 120.0, "y": 3.0,  "d": 2.2},
+        {"name": "Wide Right Bottom","x": 120.0, "y": 37.0, "d": 2.2}
+      ],
+      "usbc": {
+        "edge": "top",
+        "x_center": 60.0,
+        "width": 9.0,
+        "slot_width": 13.0,
+        "slot_height": 7.0
+      }
+    },
+    "display": {
+      "type": "ST7735 1.44 inch 128x128 SPI TFT",
+      "pcb_width": 44.0,
+      "pcb_height": 33.0,
+      "window_size": 28.0,
+      "bezel_chamfer": 1.2,
+      "x_center": 46.0,
+      "y_center": 27.0
+    },
+    "buttons": {
+      "type": "6x6x5mm tactile pushbutton (No plungers)",
+      "count": 5,
+      "style": "cross_and_select",
+      "switch_body": {"w": 6.2, "l": 6.2, "pocket_depth": 3.6, "wall_t": 1.1},
+      "actuator_stem": {"diameter": 3.5, "height": 1.1},
+      "thru_hole_diameter": 3.9,
+      "concave_finger_dish": {"diameter": 9.6, "depth": 1.1},
+      "spacing": 10.0,
+      "block_center_y": 38.0
+    },
+    "enclosure": {
+      "base_wall_thickness": 2.4,
+      "lid_wall_thickness": 2.4,
+      "floor_thickness": 2.4,
+      "lid_faceplate_thickness": 2.2,
+      "corner_radius": 6.0,
+      "clearance_xy": 1.4,
+      "daughterboard_extension": {
+        "extra_width_right": 25.0,
+        "extra_headroom_z": 4.0,
+        "ui_alignment": "board"
+      },
+      "joint": {
+        "lip_thickness": 1.2,
+        "lip_height": 4.0,
+        "lid_recess_depth": 4.6,
+        "lip_clearance_xy": 0.25,
+        "lip_lead_chamfer": 0.8,
+        "shelf_width": 1.2
+      },
+      "bottom_height": 11.5,
+      "top_height": 12.5,
+      "total_height": 24.0,
+      "fasteners": {
+        "type": "M3 Socket Head Cap Screws",
+        "screw_dia": 3.2,
+        "head_dia": 6.2,
+        "head_depth": 3.2,
+        "boss_dia": 8.0,
+        "insert_dia": 4.2,
+        "insert_depth": 5.0
+      }
+    },
+    "manufacturing": {
+      "technology": "FDM / SLA",
+      "nozzle_size": 0.4,
+      "layer_height": 0.2,
+      "elephants_foot_chamfer": 0.6,
+      "small_hole_expansion": 0.3
+    }
+  }
+}

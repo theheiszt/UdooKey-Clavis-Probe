@@ -1,0 +1,56 @@
+;
+; pio_edge_timer.pio — Precision Edge and Pulse-Width Interval Timer
+; Measures duration of alternating HIGH and LOW pulses on any GPIO pin.
+; Each count loop is exactly 2 clock cycles (15.038ns @ 133MHz).
+; Captured intervals are pushed directly to FIFO for DMA streaming.
+;
+
+.pio_version 0
+.program pio_edge_timer
+
+.wrap_target
+start_high:
+    mov x, ~null
+count_high:
+    jmp pin still_high
+    jmp high_done
+still_high:
+    jmp x--, count_high
+
+high_done:
+    mov isr, ~x
+    push noblock
+
+start_low:
+    mov x, ~null
+count_low:
+    jmp pin low_done
+    jmp x--, count_low
+low_done:
+    mov isr, ~x
+    push noblock
+.wrap
+
+% c-sdk {
+#include "hardware/pio.h"
+#include "hardware/clocks.h"
+
+static inline void pio_edge_timer_init(PIO pio, uint sm, uint offset, uint pin, float div) {
+    pio_sm_config c = pio_edge_timer_program_get_default_config(offset);
+
+    // Bind pin to IN pins and JMP pin
+    sm_config_set_in_pins(&c, pin);
+    sm_config_set_jmp_pin(&c, pin);
+
+    pio_gpio_init(pio, pin);
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
+
+    // Join RX FIFO to get 8-entry deep FIFO
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_RX);
+
+    // Set clock divider
+    sm_config_set_clkdiv(&c, div);
+
+    pio_sm_init(pio, sm, offset, &c);
+}
+%}

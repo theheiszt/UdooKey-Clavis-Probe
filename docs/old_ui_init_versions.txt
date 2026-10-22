@@ -1,0 +1,1180 @@
+=== ui_init found at step 1193 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: 
+48: #endif // DISPLAY_UI_H
+49: 
+The above content shows the entire, complete file contents of the requested file.
+====================================
+
+=== ui_init found at step 1207 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH);
+46:     pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH);
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+56:     tft_top.fillScreen(COLOR_BG);
+57:     tft_bottom.fillScreen(COLOR_BG);
+58: }
+59: 
+60: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+61: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index) {
+62:     tft_top.fillScreen(COLOR_BG);
+63: 
+64:     // Top Header: Scope status & sample rate
+65:     tft_top.fillRect(0, 0, TFT_W, 14, 0x1082);
+66:     tft_top.setTextColor(COLOR_ACCENT);
+67:     tft_top.setTextSize(1);
+68:     tft_top.setCursor(2, 3);
+69:     tft_top.printf("LA: %sHz", SAMPLE_RATE_STRS[current_rate_idx]);
+70:     tft_top.setCursor(84, 3);
+71:     tft_top.setTextColor(COLOR_CH0);
+72:     tft_top.print("READY");
+73: 
+74:     int channel_h = 13;
+75:     int y_start   = 16;
+76: 
+77:     for (int ch = 0; ch < 8; ch++) {
+78:         int base_y = y_start + (ch * channel_h);
+79: 
+80:         tft_top.setTextColor(CH_COLORS[ch]);
+81:         tft_top.setCursor(1, base_y + 2);
+82:         tft_top.printf("%d", ch);
+83: 
+84:         tft_top.drawFastHLine(10, base_y + channel_h - 2, TFT_W - 10, COLOR_GRID);
+85: 
+86:         if (buffer && total_samples > 0) {
+87:             uint8_t prev_state = (buffer[start_index] >> ch) & 0x01;
+88: 
+89:             for (int x = 0; x < 118; x++) {
+90:                 uint32_t sample_idx = start_index + x;
+91:                 if (sample_idx >= total_samples) break;
+92: 
+93:                 uint8_t curr_state = (buffer[sample_idx] >> ch) & 0x01;
+94: 
+95:                 int y_prev = base_y + channel_h - 2 - (prev_state * 8);
+96:                 int y_curr = base_y + channel_h - 2 - (curr_state * 8);
+97:                 int screen_x = 10 + x;
+98: 
+99:                 if (prev_state != curr_state) {
+100:                     tft_top.drawFastVLine(screen_x, min(y_prev, y_curr), abs(y_prev - y_curr) + 1, CH_COLORS[ch]);
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 1835 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: 
+48: #endif // DISPLAY_UI_H
+49: 
+The above content shows the entire, complete file contents of the requested file.
+====================================
+
+=== ui_init found at step 1837 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH);
+46:     pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH);
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+56:     tft_top.fillScreen(COLOR_BG);
+57:     tft_bottom.fillScreen(COLOR_BG);
+58: }
+59: 
+60: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 1885 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH);
+46:     pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH);
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 2725 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 2727 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 2918 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+46:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+56:     tft_top.fillScreen(COLOR_BG);
+57:     tft_bottom.fillScreen(COLOR_BG);
+58: }
+59: 
+60: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+61: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index) {
+62:     tft_top.fillScreen(COLOR_BG);
+63: 
+64:     // Top Header: Scope status & sample rate
+65:     tft_top.fillRect(0, 0, TFT_W, 14, 0x1082);
+66:     tft_top.setTextColor(COLOR_ACCENT);
+67:     tft_top.setTextSize(1);
+68:     tft_top.setCursor(2, 3);
+69:     tft_top.printf("LA: %sHz", SAMPLE_RATE_STRS[current_rate_idx]);
+70:     tft_top.setCursor(84, 3);
+71:     tft_top.setTextColor(COLOR_CH0);
+72:     tft_top.print("READY");
+73: 
+74:     int channel_h = 13;
+75:     int y_start   = 16;
+76: 
+77:     for (int ch = 0; ch < 8; ch++) {
+78:         int base_y = y_start + (ch * channel_h);
+79: 
+80:         tft_top.setTextColor(CH_COLORS[ch]);
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 2937 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+46:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+56:     tft_top.fillScreen(COLOR_BG);
+57:     tft_bottom.fillScreen(COLOR_BG);
+58: }
+59: 
+60: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+61: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index) {
+62:     tft_top.fillScreen(COLOR_BG);
+63: 
+64:     // Top Header: Scope status & sample rate
+65:     tft_top.fillRect(0, 0, TFT_W, 14, 0x1082);
+66:     tft_top.setTextColor(COLOR_ACCENT);
+67:     tft_top.setTextSize(1);
+68:     tft_top.setCursor(2, 3);
+69:     tft_top.printf("LA: %sHz", SAMPLE_RATE_STRS[current_rate_idx]);
+70:     tft_top.setCursor(84, 3);
+71:     tft_top.setTextColor(COLOR_CH0);
+72:     tft_top.print("READY");
+73: 
+74:     int channel_h = 13;
+75:     int y_start   = 16;
+76: 
+77:     for (int ch = 0; ch < 8; ch++) {
+78:         int base_y = y_start + (ch * channel_h);
+79: 
+80:         tft_top.setTextColor(CH_COLORS[ch]);
+81:         tft_top.setCursor(1, base_y + 2);
+82:         tft_top.printf("%d", ch);
+83: 
+84:         tft_top.drawFastHLine(10, base_y + channel_h - 2, TFT_W - 10, COLOR_GRID);
+85: 
+86:         if (buffer && total_samples > 0) {
+87:             uint8_t prev_state = (buffer[start_index] >> ch) & 0x01;
+88: 
+89:             for (int x = 0; x < 118; x++) {
+90:                 uint32_t sample_idx = start_index + x;
+91:                 if (sample_idx >= total_samples) break;
+92: 
+93:                 uint8_t curr_state = (buffer[sample_idx] >> ch) & 0x01;
+94: 
+95:                 int y_prev = base_y + channel_h - 2 - (prev_state * 8);
+96:                 int y_curr = base_y + channel_h - 2 - (curr_state * 8);
+97:                 int screen_x = 10 + x;
+98: 
+99:                 if (prev_state != curr_state) {
+100:                     tft_top.drawFastVLine(screen_x, min(y_prev, y_curr), abs(y_prev - y_curr) + 1, CH_COLORS[ch]);
+101:                 }
+102:                 tft_top.drawPixel(screen_x, y_curr, CH_COLORS[ch]);
+103:                 prev_state = curr_state;
+104:             }
+105:         }
+106:     }
+107: 
+108:     // Draw Deterministic Trigger Position Line & 'T' Marker
+109:     const TriggerEngineConfig& tc = trigger_engine_get_config();
+110:     int trig_screen_x = 10 + (117 * tc.pre_trigger_pct) / 100;
+111:     for (int y = y_start; y < y_start + (8 * channel_h); y += 3) {
+112:         tft_top.drawPixel(trig_screen_x, y, 0xF800); // Red dashed line
+113:     }
+114:     tft_top.setTextColor(0xF800);
+115:     tft_top.setTextSize(1);
+116:     tft_top.setCursor(trig_screen_x - 2, 3);
+117:     tft_top.print("T");
+118: }
+====================================
+
+=== ui_init found at step 3017 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: 
+48: #endif // DISPLAY_UI_H
+49: 
+The above content shows the entire, complete file contents of the requested file.
+====================================
+
+=== ui_init found at step 3042 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: 
+48: #endif // DISPLAY_UI_H
+49: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3046 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+46:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+56:     tft_top.fillScreen(COLOR_BG);
+57:     tft_bottom.fillScreen(COLOR_BG);
+58: }
+59: 
+60: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+61: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index) {
+62:     tft_top.fillScreen(COLOR_BG);
+63: 
+64:     // Top Header: Scope status & sample rate
+65:     tft_top.fillRect(0, 0, TFT_W, 14, 0x1082);
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3050 ===
+ void ui_init() {
+     SPI.setSCK(TFT_SCK);
+     SPI.setTX(TFT_MOSI);
+@@ -44,10 +44,51 @@
+     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+ 
++    // 1. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
++    // GP15 is DISP_RST (Header P1 Pin 20), GP11 is CTRL_RST (Header P1 Pin 15)
++    if (DISP_RST >= 0) { pinMode(DISP_RST, OUTPUT); digitalWrite(DISP_RST, LOW); }
++    if (CTRL_RST >= 0) { pinMode(CTRL_RST, OUTPUT); digitalWrite(CTRL_RST, LOW); }
++    delay(25);
++    if (DISP_RST >= 0) digitalWrite(DISP_RST, HIGH);
++    if (CTRL_RST >= 0) digitalWrite(CTRL_RST, HIGH);
++    delay(120);
++
++    // 2. Initialize Displays with Adafruit ST7735 sequence
+     tft_top.initR(INITR_144GREENTAB);
+     tft_bottom.initR(INITR_144GREENTAB);
+ 
++    // 3. Fallback Software Reset & Wake Sequence:
++    // Guarantees controller wakes up even if physical RES pin is tied to 3.3V, shared, or unwired!
++    tft_top.sendCommand(0x01); // ST77XX_SWRESET
++    tft_bottom.sendCommand(0x01);
++    delay(120);
++
++    tft_top.sendCommand(0x11); // ST77XX_SLPOUT
++    tft_bottom.sendCommand(0x11);
++    delay(120);
++
++    tft_top.sendCommand(0x29); // ST77XX_DISPON
++    tft_bottom.sendCommand(0x29);
++    delay(20);
++
++    // 4. Safe Touch Controller Initialization
++    // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
++    pinMode(TOUCH_IRQ, INPUT_PULLUP);
++    pinMode(TOUCH_CS, OUTPUT);
++    digitalWrite(TOUCH_CS, HIGH);
++
+     touch.begin();
++    // Re-assert pullup (touch.begin overrides to INPUT)
++    pinMode(TOUCH_IRQ, INPUT_PULLUP);
++
++    // Check if touch controller hardware is physically present
++    delay(5);
++    if (digitalRead(TOUCH_IRQ) == HIGH) {
++        touch_hardware_present = true;
++    } else {
++        // Line held LOW on startup without user touch -> floating/grounded, disable touch
++        touch_hardware_present = false;
++    }
+ 
+     // Default to Rotation 0 (Portrait) for the vertical handheld case
+     ui_set_rotation(0);
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+====================================
+
+=== ui_init found at step 3280 ===
+46: void ui_init() {
+47:     SPI.setSCK(TFT_SCK);
+48:     SPI.setTX(TFT_MOSI);
+49:     SPI.setRX(TFT_MISO);
+50:     SPI.begin();
+51: 
+52:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+53:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+54: 
+55:     // 1. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+56:     // GP15 is DISP_RST (Header P1 Pin 20), GP11 is CTRL_RST (Header P1 Pin 15)
+57:     if (DISP_RST >= 0) { pinMode(DISP_RST, OUTPUT); digitalWrite(DISP_RST, LOW); }
+58:     if (CTRL_RST >= 0) { pinMode(CTRL_RST, OUTPUT); digitalWrite(CTRL_RST, LOW); }
+59:     delay(25);
+60:     if (DISP_RST >= 0) digitalWrite(DISP_RST, HIGH);
+61:     if (CTRL_RST >= 0) digitalWrite(CTRL_RST, HIGH);
+62:     delay(120);
+63: 
+64:     // 2. Initialize Displays with Adafruit ST7735 sequence
+65:     tft_top.initR(INITR_144GREENTAB);
+66:     tft_bottom.initR(INITR_144GREENTAB);
+67: 
+68:     // 3. Fallback Software Reset & Wake Sequence:
+69:     // Guarantees controller wakes up even if physical RES pin is tied to 3.3V, shared, or unwired!
+70:     tft_top.sendCommand(0x01); // ST77XX_SWRESET
+71:     tft_bottom.sendCommand(0x01);
+72:     delay(120);
+73: 
+74:     tft_top.sendCommand(0x11); // ST77XX_SLPOUT
+75:     tft_bottom.sendCommand(0x11);
+76:     delay(120);
+77: 
+78:     tft_top.sendCommand(0x29); // ST77XX_DISPON
+79:     tft_bottom.sendCommand(0x29);
+80:     delay(20);
+81: 
+82:     // 4. Safe Touch Controller Initialization
+83:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+84:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+85:     pinMode(TOUCH_CS, OUTPUT);
+86:     digitalWrite(TOUCH_CS, HIGH);
+87: 
+88:     touch.begin();
+89:     // Re-assert pullup (touch.begin overrides to INPUT)
+90:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+91: 
+92:     // Check if touch controller hardware is physically present
+93:     delay(5);
+94:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+95:         touch_hardware_present = true;
+96:     } else {
+97:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+98:         touch_hardware_present = false;
+99:     }
+100: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3288 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: bool ui_is_touch_present();
+48: void ui_run_display_test(uint8_t target, Stream& out);
+49: void ui_init_display(uint8_t target, uint8_t tab_type, Stream& out);
+50: 
+51: #endif // DISPLAY_UI_H
+52: 
+The above content shows the entire, complete file contents of the requested file.
+====================================
+
+=== ui_init found at step 3401 ===
+46: void ui_init() {
+47:     SPI.setSCK(TFT_SCK);
+48:     SPI.setTX(TFT_MOSI);
+49:     SPI.setRX(TFT_MISO);
+50:     SPI.begin();
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3437 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: bool ui_is_touch_present();
+48: void ui_run_display_test(uint8_t target, Stream& out);
+49: void ui_init_display(uint8_t target, uint8_t tab_type, Stream& out);
+50: 
+51: #endif // DISPLAY_UI_H
+52: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3484 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+57:     // GP15 is DISP_RST (Header P1 Pin 20), GP11 is CTRL_RST (Header P1 Pin 15)
+58:     if (DISP_RST >= 0) { pinMode(DISP_RST, OUTPUT); digitalWrite(DISP_RST, LOW); }
+59:     if (CTRL_RST >= 0) { pinMode(CTRL_RST, OUTPUT); digitalWrite(CTRL_RST, LOW); }
+60:     delay(25);
+61:     if (DISP_RST >= 0) digitalWrite(DISP_RST, HIGH);
+62:     if (CTRL_RST >= 0) digitalWrite(CTRL_RST, HIGH);
+63:     delay(120);
+64: 
+65:     // 2. Initialize Displays with Adafruit ST7735 sequence
+66:     tft_top.initR(INITR_144GREENTAB);
+67:     tft_bottom.initR(INITR_144GREENTAB);
+68: 
+69:     // 4. Safe Touch Controller Initialization
+70:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+71:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+72:     pinMode(TOUCH_CS, OUTPUT);
+73:     digitalWrite(TOUCH_CS, HIGH);
+74: 
+75:     touch.begin();
+76:     // Re-assert pullup (touch.begin overrides to INPUT)
+77:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+78: 
+79:     // Check if touch controller hardware is physically present
+80:     delay(5);
+81:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+82:         touch_hardware_present = true;
+83:     } else {
+84:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+85:         touch_hardware_present = false;
+86:     }
+87: 
+88:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+89:     ui_set_rotation(0);
+90: 
+91:     tft_top.fillScreen(COLOR_BG);
+92:     tft_bottom.fillScreen(COLOR_BG);
+93: }
+94: 
+95: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+96: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index) {
+97:     tft_top.fillScreen(COLOR_BG);
+98: 
+99:     // Top Header: Scope status & sample rate
+100:     tft_top.fillRect(0, 0, TFT_W, 14, 0x1082);
+101:     tft_top.setTextColor(COLOR_ACCENT);
+102:     tft_top.setTextSize(1);
+103:     tft_top.setCursor(2, 3);
+104:     tft_top.printf("LA: %sHz", SAMPLE_RATE_STRS[current_rate_idx]);
+105:     tft_top.setCursor(84, 3);
+106:     tft_top.setTextColor(COLOR_CH0);
+107:     tft_top.print("READY");
+108: 
+109:     int channel_h = 13;
+110:     int y_start   = 16;
+111: 
+112:     for (int ch = 0; ch < 8; ch++) {
+113:         int base_y = y_start + (ch * channel_h);
+114: 
+115:         tft_top.setTextColor(CH_COLORS[ch]);
+116:         tft_top.setCursor(1, base_y + 2);
+117:         tft_top.printf("%d", ch);
+118: 
+119:         tft_top.drawFastHLine(10, base_y + channel_h - 2, TFT_W - 10, COLOR_GRID);
+120: 
+121:         if (buffer && total_samples > 0) {
+122:             uint8_t prev_state = (buffer[start_index] >> ch) & 0x01;
+123: 
+124:             for (int x = 0; x < 118; x++) {
+125:                 uint32_t sample_idx = start_index + x;
+126:                 if (sample_idx >= total_samples) break;
+====================================
+
+=== ui_init found at step 3633 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+57:     // GP15 is DISP_RST (Header P1 Pin 20), GP11 is CTRL_RST (Header P1 Pin 15)
+58:     if (DISP_RST >= 0) { pinMode(DISP_RST, OUTPUT); digitalWrite(DISP_RST, LOW); }
+59:     if (CTRL_RST >= 0) { pinMode(CTRL_RST, OUTPUT); digitalWrite(CTRL_RST, LOW); }
+60:     delay(25);
+61:     if (DISP_RST >= 0) digitalWrite(DISP_RST, HIGH);
+62:     if (CTRL_RST >= 0) digitalWrite(CTRL_RST, HIGH);
+63:     delay(120);
+64: 
+65:     // 2. Initialize Displays with Adafruit ST7735 sequence
+66:     tft_top.initR(INITR_144GREENTAB);
+67:     tft_bottom.initR(INITR_144GREENTAB);
+68: 
+69:     // 4. Safe Touch Controller Initialization
+70:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+71:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+72:     pinMode(TOUCH_CS, OUTPUT);
+73:     digitalWrite(TOUCH_CS, HIGH);
+74: 
+75:     touch.begin();
+76:     // Re-assert pullup (touch.begin overrides to INPUT)
+77:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+78: 
+79:     // Check if touch controller hardware is physically present
+80:     delay(5);
+81:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+82:         touch_hardware_present = true;
+83:     } else {
+84:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+85:         touch_hardware_present = false;
+86:     }
+87: 
+88:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+89:     ui_set_rotation(0);
+90: 
+91:     tft_top.fillScreen(COLOR_BG);
+92:     tft_bottom.fillScreen(COLOR_BG);
+93: }
+94: 
+95: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3637 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+57:     // GP15 is DISP_RST (Header P1 Pin 20), GP11 is CTRL_RST (Header P1 Pin 15)
+58:     if (DISP_RST >= 0) { pinMode(DISP_RST, OUTPUT); digitalWrite(DISP_RST, LOW); }
+59:     if (CTRL_RST >= 0) { pinMode(CTRL_RST, OUTPUT); digitalWrite(CTRL_RST, LOW); }
+60:     delay(25);
+61:     if (DISP_RST >= 0) digitalWrite(DISP_RST, HIGH);
+62:     if (CTRL_RST >= 0) digitalWrite(CTRL_RST, HIGH);
+63:     delay(120);
+64: 
+65:     // 2. Initialize Displays with Adafruit ST7735 sequence
+66:     tft_top.initR(INITR_144GREENTAB);
+67:     tft_bottom.initR(INITR_144GREENTAB);
+68: 
+69:     // 4. Safe Touch Controller Initialization
+70:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+71:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+72:     pinMode(TOUCH_CS, OUTPUT);
+73:     digitalWrite(TOUCH_CS, HIGH);
+74: 
+75:     touch.begin();
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3639 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: bool ui_is_touch_present();
+48: void ui_run_display_test(uint8_t target, Stream& out);
+49: void ui_init_display(uint8_t target, uint8_t tab_type, Stream& out);
+50: void ui_print_display_guide(Stream& out);
+51: void ui_test_top_pins(int8_t cs, int8_t dc, int8_t rst, uint8_t tab, Stream& out);
+52: 
+53: #endif // DISPLAY_UI_H
+54: 
+The above content shows the entire, complete file contents of the requested file.
+====================================
+
+=== ui_init found at step 3647 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+57:     // GP15 is DISP_RST (Header P1 Pin 20), GP11 is CTRL_RST (Header P1 Pin 15)
+58:     if (DISP_RST >= 0) { pinMode(DISP_RST, OUTPUT); digitalWrite(DISP_RST, LOW); }
+59:     if (CTRL_RST >= 0) { pinMode(CTRL_RST, OUTPUT); digitalWrite(CTRL_RST, LOW); }
+60:     delay(25);
+61:     if (DISP_RST >= 0) digitalWrite(DISP_RST, HIGH);
+62:     if (CTRL_RST >= 0) digitalWrite(CTRL_RST, HIGH);
+63:     delay(120);
+64: 
+65:     // 2. Initialize Displays with Adafruit ST7735 sequence
+66:     tft_top.initR(INITR_144GREENTAB);
+67:     tft_bottom.initR(INITR_144GREENTAB);
+68: 
+69:     // 4. Safe Touch Controller Initialization
+70:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+71:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+72:     pinMode(TOUCH_CS, OUTPUT);
+73:     digitalWrite(TOUCH_CS, HIGH);
+74: 
+75:     touch.begin();
+76:     // Re-assert pullup (touch.begin overrides to INPUT)
+77:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+78: 
+79:     // Check if touch controller hardware is physically present
+80:     delay(5);
+81:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+82:         touch_hardware_present = true;
+83:     } else {
+84:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+85:         touch_hardware_present = false;
+86:     }
+87: 
+88:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+89:     ui_set_rotation(0);
+90: 
+91:     tft_top.fillScreen(COLOR_BG);
+92:     tft_bottom.fillScreen(COLOR_BG);
+93: }
+94: 
+95: // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3674 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Force RP2040 GPIO multiplexers to SIO function with 4mA drive strength
+57:     gpio_init(DISP_CS);
+58:     gpio_set_function(DISP_CS, GPIO_FUNC_SIO);
+59:     gpio_set_dir(DISP_CS, GPIO_OUT);
+60:     gpio_set_drive_strength(DISP_CS, GPIO_DRIVE_STRENGTH_4MA);
+61:     gpio_put(DISP_CS, 1);
+62: 
+63:     gpio_init(DISP_DC);
+64:     gpio_set_function(DISP_DC, GPIO_FUNC_SIO);
+65:     gpio_set_dir(DISP_DC, GPIO_OUT);
+66:     gpio_set_drive_strength(DISP_DC, GPIO_DRIVE_STRENGTH_4MA);
+67:     gpio_put(DISP_DC, 1);
+68: 
+69:     if (DISP_RST >= 0) {
+70:         gpio_init(DISP_RST);
+71:         gpio_set_function(DISP_RST, GPIO_FUNC_SIO);
+72:         gpio_set_dir(DISP_RST, GPIO_OUT);
+73:         gpio_set_drive_strength(DISP_RST, GPIO_DRIVE_STRENGTH_4MA);
+74:         gpio_put(DISP_RST, 1);
+75:     }
+76: 
+77:     gpio_init(CTRL_CS);
+78:     gpio_set_function(CTRL_CS, GPIO_FUNC_SIO);
+79:     gpio_set_dir(CTRL_CS, GPIO_OUT);
+80:     gpio_set_drive_strength(CTRL_CS, GPIO_DRIVE_STRENGTH_4MA);
+81:     gpio_put(CTRL_CS, 1);
+82: 
+83:     gpio_init(CTRL_DC);
+84:     gpio_set_function(CTRL_DC, GPIO_FUNC_SIO);
+85:     gpio_set_dir(CTRL_DC, GPIO_OUT);
+86:     gpio_set_drive_strength(CTRL_DC, GPIO_DRIVE_STRENGTH_4MA);
+87:     gpio_put(CTRL_DC, 1);
+88: 
+89:     if (CTRL_RST >= 0) {
+90:         gpio_init(CTRL_RST);
+91:         gpio_set_function(CTRL_RST, GPIO_FUNC_SIO);
+92:         gpio_set_dir(CTRL_RST, GPIO_OUT);
+93:         gpio_set_drive_strength(CTRL_RST, GPIO_DRIVE_STRENGTH_4MA);
+94:         gpio_put(CTRL_RST, 1);
+95:     }
+96: 
+97:     // 2. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+98:     // GP15 is DISP_RST (Header P2 Pin 20), GP11 is CTRL_RST (Header P2 Pin 15)
+99:     if (DISP_RST >= 0) gpio_put(DISP_RST, 0);
+100:     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 0);
+101:     delay(25);
+102:     if (DISP_RST >= 0) gpio_put(DISP_RST, 1);
+103:     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 1);
+104:     delay(120);
+105: 
+106:     // 3. Initialize Displays with Adafruit ST7735 sequence (safe because rst is -1, no cross-reset collision)
+107:     tft_top.initR(INITR_144GREENTAB);
+108:     tft_bottom.initR(INITR_144GREENTAB);
+109: 
+110:     // 4. Safe Touch Controller Initialization
+111:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+112:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+113:     pinMode(TOUCH_CS, OUTPUT);
+114:     digitalWrite(TOUCH_CS, HIGH);
+115: 
+116:     touch.begin();
+117:     // Re-assert pullup (touch.begin overrides to INPUT)
+118:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+119: 
+120:     // Check if touch controller hardware is physically present
+121:     delay(5);
+122:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+123:         touch_hardware_present = true;
+124:     } else {
+125:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+126:         touch_hardware_present = false;
+====================================
+
+=== ui_init found at step 3680 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: bool ui_is_touch_present();
+48: void ui_run_display_test(uint8_t target, Stream& out);
+49: void ui_init_display(uint8_t target, uint8_t tab_type, Stream& out);
+50: void ui_print_display_guide(Stream& out);
+51: void ui_test_top_pins(int8_t cs, int8_t dc, int8_t rst, uint8_t tab, Stream& out);
+52: void ui_wiggle_pins(Stream& out);
+53: 
+54: #endif // DISPLAY_UI_H
+55: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3684 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Force RP2040 GPIO multiplexers to SIO function with 4mA drive strength
+57:     gpio_init(DISP_CS);
+58:     gpio_set_function(DISP_CS, GPIO_FUNC_SIO);
+59:     gpio_set_dir(DISP_CS, GPIO_OUT);
+60:     gpio_set_drive_strength(DISP_CS, GPIO_DRIVE_STRENGTH_4MA);
+61:     gpio_put(DISP_CS, 1);
+62: 
+63:     gpio_init(DISP_DC);
+64:     gpio_set_function(DISP_DC, GPIO_FUNC_SIO);
+65:     gpio_set_dir(DISP_DC, GPIO_OUT);
+66:     gpio_set_drive_strength(DISP_DC, GPIO_DRIVE_STRENGTH_4MA);
+67:     gpio_put(DISP_DC, 1);
+68: 
+69:     if (DISP_RST >= 0) {
+70:         gpio_init(DISP_RST);
+71:         gpio_set_function(DISP_RST, GPIO_FUNC_SIO);
+72:         gpio_set_dir(DISP_RST, GPIO_OUT);
+73:         gpio_set_drive_strength(DISP_RST, GPIO_DRIVE_STRENGTH_4MA);
+74:         gpio_put(DISP_RST, 1);
+75:     }
+76: 
+77:     gpio_init(CTRL_CS);
+78:     gpio_set_function(CTRL_CS, GPIO_FUNC_SIO);
+79:     gpio_set_dir(CTRL_CS, GPIO_OUT);
+80:     gpio_set_drive_strength(CTRL_CS, GPIO_DRIVE_STRENGTH_4MA);
+81:     gpio_put(CTRL_CS, 1);
+82: 
+83:     gpio_init(CTRL_DC);
+84:     gpio_set_function(CTRL_DC, GPIO_FUNC_SIO);
+85:     gpio_set_dir(CTRL_DC, GPIO_OUT);
+86:     gpio_set_drive_strength(CTRL_DC, GPIO_DRIVE_STRENGTH_4MA);
+87:     gpio_put(CTRL_DC, 1);
+88: 
+89:     if (CTRL_RST >= 0) {
+90:         gpio_init(CTRL_RST);
+91:         gpio_set_function(CTRL_RST, GPIO_FUNC_SIO);
+92:         gpio_set_dir(CTRL_RST, GPIO_OUT);
+93:         gpio_set_drive_strength(CTRL_RST, GPIO_DRIVE_STRENGTH_4MA);
+94:         gpio_put(CTRL_RST, 1);
+95:     }
+96: 
+97:     // 2. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+98:     // GP15 is DISP_RST (Header P2 Pin 20), GP11 is CTRL_RST (Header P2 Pin 15)
+99:     if (DISP_RST >= 0) gpio_put(DISP_RST, 0);
+100:     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 0);
+101:     delay(25);
+102:     if (DISP_RST >= 0) gpio_put(DISP_RST, 1);
+103:     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 1);
+104:     delay(120);
+105: 
+106:     // 3. Initialize Displays with Adafruit ST7735 sequence (safe because rst is -1, no cross-reset collision)
+107:     tft_top.initR(INITR_144GREENTAB);
+108:     tft_bottom.initR(INITR_144GREENTAB);
+109: 
+110:     // 4. Safe Touch Controller Initialization
+111:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+112:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+113:     pinMode(TOUCH_CS, OUTPUT);
+114:     digitalWrite(TOUCH_CS, HIGH);
+115: 
+116:     touch.begin();
+117:     // Re-assert pullup (touch.begin overrides to INPUT)
+118:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+119: 
+120:     // Check if touch controller hardware is physically present
+121:     delay(5);
+122:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+123:         touch_hardware_present = true;
+124:     } else {
+125:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+126:         touch_hardware_present = false;
+====================================
+
+=== ui_init found at step 3690 ===
+47: void ui_init() {
+48:     SPI.setSCK(TFT_SCK);
+49:     SPI.setTX(TFT_MOSI);
+50:     SPI.setRX(TFT_MISO);
+51:     SPI.begin();
+52: 
+53:     if (DISP_BL >= 0) { pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH); }
+54:     if (CTRL_BL >= 0) { pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH); }
+55: 
+56:     // 1. Force RP2040 GPIO multiplexers to SIO function with 4mA drive strength
+57:     gpio_init(DISP_CS);
+58:     gpio_set_function(DISP_CS, GPIO_FUNC_SIO);
+59:     gpio_set_dir(DISP_CS, GPIO_OUT);
+60:     gpio_set_drive_strength(DISP_CS, GPIO_DRIVE_STRENGTH_4MA);
+61:     gpio_put(DISP_CS, 1);
+62: 
+63:     gpio_init(DISP_DC);
+64:     gpio_set_function(DISP_DC, GPIO_FUNC_SIO);
+65:     gpio_set_dir(DISP_DC, GPIO_OUT);
+66:     gpio_set_drive_strength(DISP_DC, GPIO_DRIVE_STRENGTH_4MA);
+67:     gpio_put(DISP_DC, 1);
+68: 
+69:     if (DISP_RST >= 0) {
+70:         gpio_init(DISP_RST);
+71:         gpio_set_function(DISP_RST, GPIO_FUNC_SIO);
+72:         gpio_set_dir(DISP_RST, GPIO_OUT);
+73:         gpio_set_drive_strength(DISP_RST, GPIO_DRIVE_STRENGTH_4MA);
+74:         gpio_put(DISP_RST, 1);
+75:     }
+76: 
+77:     gpio_init(CTRL_CS);
+78:     gpio_set_function(CTRL_CS, GPIO_FUNC_SIO);
+79:     gpio_set_dir(CTRL_CS, GPIO_OUT);
+80:     gpio_set_drive_strength(CTRL_CS, GPIO_DRIVE_STRENGTH_4MA);
+81:     gpio_put(CTRL_CS, 1);
+82: 
+83:     gpio_init(CTRL_DC);
+84:     gpio_set_function(CTRL_DC, GPIO_FUNC_SIO);
+85:     gpio_set_dir(CTRL_DC, GPIO_OUT);
+86:     gpio_set_drive_strength(CTRL_DC, GPIO_DRIVE_STRENGTH_4MA);
+87:     gpio_put(CTRL_DC, 1);
+88: 
+89:     if (CTRL_RST >= 0) {
+90:         gpio_init(CTRL_RST);
+91:         gpio_set_function(CTRL_RST, GPIO_FUNC_SIO);
+92:         gpio_set_dir(CTRL_RST, GPIO_OUT);
+93:         gpio_set_drive_strength(CTRL_RST, GPIO_DRIVE_STRENGTH_4MA);
+94:         gpio_put(CTRL_RST, 1);
+95:     }
+96: 
+97:     // 2. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+98:     // GP15 is DISP_RST (Header P2 Pin 20), GP11 is CTRL_RST (Header P2 Pin 15)
+99:     if (DISP_RST >= 0) gpio_put(DISP_RST, 0);
+100:     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 0);
+101:     delay(25);
+102:     if (DISP_RST >= 0) gpio_put(DISP_RST, 1);
+103:     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 1);
+104:     delay(120);
+105: 
+106:     // 3. Initialize Displays with Adafruit ST7735 sequence (safe because rst is -1, no cross-reset collision)
+107:     tft_top.initR(INITR_144GREENTAB);
+108:     tft_bottom.initR(INITR_144GREENTAB);
+109: 
+110:     // 4. Safe Touch Controller Initialization
+111:     // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+112:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+113:     pinMode(TOUCH_CS, OUTPUT);
+114:     digitalWrite(TOUCH_CS, HIGH);
+115: 
+116:     touch.begin();
+117:     // Re-assert pullup (touch.begin overrides to INPUT)
+118:     pinMode(TOUCH_IRQ, INPUT_PULLUP);
+119: 
+120:     // Check if touch controller hardware is physically present
+121:     delay(5);
+122:     if (digitalRead(TOUCH_IRQ) == HIGH) {
+123:         touch_hardware_present = true;
+124:     } else {
+125:         // Line held LOW on startup without user touch -> floating/grounded, disable touch
+126:         touch_hardware_present = false;
+====================================
+
+=== ui_init found at step 3692 ===
+ void ui_init() {
+     SPI.setSCK(TFT_SCK);
+     SPI.setTX(TFT_MOSI);
+@@ -93,6 +93,12 @@
+         gpio_put(CTRL_RST, 1);
+     }
+ 
++    pinMode(TOUCH_CS, OUTPUT);
++    digitalWrite(TOUCH_CS, HIGH);
++
++    // Explicitly deselect all chips before reset & SPI transactions
++    ui_deselect_all();
++
+     // 2. Hardware Reset: Pulse both DISP_RST and CTRL_RST lines simultaneously
+     // GP15 is DISP_RST (Header P2 Pin 20), GP11 is CTRL_RST (Header P2 Pin 15)
+     if (DISP_RST >= 0) gpio_put(DISP_RST, 0);
+@@ -101,19 +101,22 @@
+     if (CTRL_RST >= 0) gpio_put(CTRL_RST, 1);
+     delay(120);
+ 
+-    // 3. Initialize Displays with Adafruit ST7735 sequence (safe because rst is -1, no cross-reset collision)
+-    tft_top.initR(INITR_144GREENTAB);
++    // 3. Initialize TOP Display: strictly ensure BOTTOM CS and TOUCH CS are HIGH
++    ui_select_top();
++    tft_top.initR(INITR_144GREENTAB);
++    ui_deselect_all();
++
++    // 4. Initialize BOTTOM Display: strictly ensure TOP CS and TOUCH CS are HIGH
++    ui_select_bottom();
+     tft_bottom.initR(INITR_144GREENTAB);
+-
+-    // 4. Safe Touch Controller Initialization
+-    // Enable internal pullup on TOUCH_IRQ (GP22) so it NEVER floats when no touch is connected!
+-    pinMode(TOUCH_IRQ, INPUT_PULLUP);
+-    pinMode(TOUCH_CS, OUTPUT);
+-    digitalWrite(TOUCH_CS, HIGH);
+-
++    ui_deselect_all();
++
++    // 5. Safe Touch Controller Initialization
++    pinMode(TOUCH_IRQ, INPUT_PULLUP);
++    ui_deselect_all();
+     touch.begin();
+-    // Re-assert pullup (touch.begin overrides to INPUT)
+-    pinMode(TOUCH_IRQ, INPUT_PULLUP);
++    pinMode(TOUCH_IRQ, INPUT_PULLUP);
++    ui_deselect_all();
+ 
+     // Check if touch controller hardware is physically present
+     delay(5);
+@@ -126,8 +126,13 @@
+     // Default to Rotation 0 (Portrait) for the vertical handheld case
+     ui_set_rotation(0);
+ 
+-    tft_top.fillScreen(COLOR_BG);
+-    tft_bottom.fillScreen(COLOR_BG);
++    ui_select_top();
++    tft_top.fillScreen(COLOR_BG);
++    ui_deselect_all();
++
++    ui_select_bottom();
++    tft_bottom.fillScreen(COLOR_BG);
++    ui_deselect_all();
+ }
+ 
+ // ─── Display 1 (Top Screen): Waveforms & Logic Visualizer ────────────────────
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.
+====================================
+
+=== ui_init found at step 3721 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: // Explicit SPI Bus Arbitration & Chip-Select Mutual Exclusion
+44: void ui_deselect_all();
+45: void ui_select_top();
+46: void ui_select_bottom();
+47: 
+48: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+49: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+50: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+51: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+52: bool ui_is_touch_present();
+53: void ui_run_display_test(uint8_t target, bool reinit, Stream& out);
+54: void ui_init_display(uint8_t target, uint8_t tab_type, Stream& out);
+55: void ui_print_display_guide(Stream& out);
+56: void ui_test_top_pins(int8_t cs, int8_t dc, int8_t rst, uint8_t tab, Stream& out);
+57: void ui_wiggle_pins(Stream& out);
+58: 
+59: #endif // DISPLAY_UI_H
+60: 
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 3765 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: // Explicit SPI Bus Arbitration & Chip-Select Mutual Exclusion
+44: void ui_deselect_all();
+45: void ui_select_top();
+The above content does NOT show the entire file contents. If you need to view any lines of the file which were not shown to complete your task, call this tool again to view those lines.
+====================================
+
+=== ui_init found at step 5448 ===
+39: void ui_init();
+40: void ui_set_rotation(uint8_t rot);
+41: uint8_t ui_get_rotation();
+42: 
+43: void ui_update_waveforms(const uint8_t* buffer, uint32_t total_samples, uint32_t start_index);
+44: void ui_update_bus_pirate_status(const char* mode_name, const char* last_output, float ldr_v, float aux_v);
+45: void ui_update_control_menu(const LogicAnalyzerConfig& cfg, bool running);
+46: bool ui_handle_touch(LogicAnalyzerConfig& cfg, bool& start_requested, bool& stop_requested, char* out_cmd, size_t max_cmd_len);
+47: 
+48: #endif // DISPLAY_UI_H
+49: 
+The above content shows the entire, complete file contents of the requested file.
+====================================
+=== ui_init found at step 1207 ===
+39: void ui_init() {
+40:     SPI.setSCK(TFT_SCK);
+41:     SPI.setTX(TFT_MOSI);
+42:     SPI.setRX(TFT_MISO);
+43:     SPI.begin();
+44: 
+45:     pinMode(DISP_BL, OUTPUT); digitalWrite(DISP_BL, HIGH);
+46:     pinMode(CTRL_BL, OUTPUT); digitalWrite(CTRL_BL, HIGH);
+47: 
+48:     tft_top.initR(INITR_144GREENTAB);
+49:     tft_bottom.initR(INITR_144GREENTAB);
+50: 
+51:     touch.begin();
+52: 
+53:     // Default to Rotation 0 (Portrait) for the vertical handheld case
+54:     ui_set_rotation(0);
+55: 
+56:     tft_top.fillScreen(COLOR_BG);
+57:     tft_bottom.fillScreen(COLOR_BG);
+58: }
+59: 
+
+====================================
+

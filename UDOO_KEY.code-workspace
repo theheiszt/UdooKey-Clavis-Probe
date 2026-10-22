@@ -1,0 +1,25 @@
+{
+    "folders": [
+        {
+            "name": "Project Root",
+            "path": "."
+        },
+        {
+            "name": "ESP32 Coprocessor",
+            "path": "esp32_coprocessor"
+        },
+        {
+            "name": "RP2040 Logic Analyzer",
+            "path": "rp2040_logic_analyzer"
+        },
+        {
+            "name": "C++ Desktop App",
+            "path": "udoo-key-app"
+        }
+    ],
+    "settings": {
+        "platformio-ide.customPATH": "C:\\Users\\Andrew\\.platformio\\penv\\Scripts;C:\\Users\\Andrew\\.platformio\\penv",
+        "cmake.sourceDirectory": "${workspaceFolder:C++ Desktop App}",
+        "cmake.buildDirectory": "${workspaceFolder:C++ Desktop App}/build"
+    }
+}
